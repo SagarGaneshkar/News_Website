@@ -23,4 +23,4 @@ const Card = ({ data }) => {
   );
 };
 
-export default Card; // ✅ This line must exist
+export default Card;
