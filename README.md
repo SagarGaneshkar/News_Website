@@ -1,12 +1,55 @@
-# React + Vite
+```mermaid
+graph TD
+    subgraph User & Data Input
+        User
+        ManualEntry[Manual Expense Entry]
+        FutureOCR["(Future Scope)<br>Receipt Scanning (OCR)"]
+    end
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+    subgraph Frontend ["Client-Side (React.js / Vite)"]
+        UI_Dashboard["Dashboard & Visualizations<br>(Chart.js / D3.js)"]
+        UI_Entry["Data Input Forms"]
+        UI_Insights["Predictions & Recommendations UI"]
+    end
 
-Currently, two official plugins are available:
+    subgraph Backend ["Server-Side (Node.js / Django)"]
+        API["API Endpoints (REST/GraphQL)"]
+        Auth["User Authentication"]
+        Logic["Core Business Logic"]
+    end
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+    subgraph ML_Module ["Machine Learning Core (Python)"]
+        DataProc[Data Preprocessing]
+        Categorization["1. Automated Categorization<br>(Scikit-learn)"]
+        Prediction["2. Predictive Analytics<br>(Forecasting & Anomaly Detection)"]
+        Recommendation["3. Personalized Insights Engine"]
+    end
 
-## Expanding the ESLint configuration
+    subgraph Database ["Data Storage (MySQL / MongoDB)"]
+        DB_User["User Data"]
+        DB_Transactions["Transaction Records"]
+    end
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+    %% --- Connections ---
+    User --> UI_Entry
+    ManualEntry --> UI_Entry
+    FutureOCR --> API
+
+    UI_Dashboard <--> API
+    UI_Entry <--> API
+    UI_Insights <--> API
+
+    API <--> Auth
+    API <--> Logic
+
+    Logic <--> DB_Transactions
+    Logic <--> DB_User
+
+    Logic --"Raw Transaction Data"--> DataProc
+    DataProc --> Categorization
+    DataProc --"Historical Data"--> Prediction
+    Prediction --"Spending Patterns"--> Recommendation
+
+    Categorization --"Categorized Data"--> Logic
+    Prediction --"Forecasts & Warnings"--> Logic
+    Recommendation --"Saving Tips"--> Logic
